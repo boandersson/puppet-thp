@@ -47,19 +47,18 @@ class thp (
     validate_re($thp_status, '^(always)|(never)|(madvise)$', 'thp::thp_status is invalid and does not match the regex.')
     validate_re($thp_defrag_status, '^(always)|(never)|(madvise)$', 'thp::thp_status is invalid and does not match the regex.')
 
-
     case $::osfamily {
         'RedHat': {
             case $::lsbmajdistrelease {
               '5': { fail("${::osfamily} ${::lsbmajdistrelease} does not have Transparent Huge Page support") }
               '6': { }
+              default: { fail "Module not tested for ${::osfamily} ${::lsbmajdistrelease}" }
             }
         }
         default: {
             fail("Unsupported osfamily. I don't know how to configure Transparent Huge Page support for ${::osfamily}")
         }
     }
-
 
     file {'thp_sysconfig_path':
         ensure  => file,
