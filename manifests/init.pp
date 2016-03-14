@@ -36,7 +36,7 @@ class thp (
     validate_string($service_name)
     validate_re($service_ensure, '^(present)|(running)|(absent)|(stopped)$', 'thp::service_ensure is invalid and does not match the regex.')
 
-    if type($service_enable) == 'String' {
+    if is_string($service_enable) {
       $service_enable_real = str2bool($service_enable)
     } else {
       $service_enable_real = $service_enable
@@ -52,7 +52,7 @@ class thp (
             case $::lsbmajdistrelease {
               '5': { fail("${::osfamily} ${::lsbmajdistrelease} does not have Transparent Huge Page support") }
               '6': { }
-              default: { fail "Module not tested for ${::osfamily} ${::lsbmajdistrelease}" }
+              default: { fail "${::osfamily} ${::lsbmajdistrelease} currently unsupported" }
             }
         }
         default: {

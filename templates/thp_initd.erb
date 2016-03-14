@@ -1,21 +1,21 @@
-#!/bin/sh 
+#!/bin/sh
 #
 # thp manages transparent huge pages availability on a system
 #
 # chkconfig:   345 99 99
 # description: manages the start and stop of transparent huge page support
-#             
+#
 
 ### BEGIN INIT INFO
-# Provides: 
-# Required-Start: 
-# Required-Stop: 
-# Should-Start: 
-# Should-Stop: 
-# Default-Start: 
-# Default-Stop: 
-# Short-Description: 
-# Description:      
+# Provides:
+# Required-Start:
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start:
+# Default-Stop:
+# Short-Description:
+# Description:
 ### END INIT INFO
 
 # Source function library.
@@ -29,14 +29,14 @@ lockfile=/var/lock/subsys/$prog
 
 start() {
     if [[ -n $THP ]] ; then
-	if [ -f /sys/kernel/mm/transparent_hugepage/enabled ] ; then
-		echo "$THP" > /sys/kernel/mm/transparent_hugepage/enabled
-	fi
+        if [ -f /sys/kernel/mm/transparent_hugepage/enabled ] ; then
+            echo "$THP" > /sys/kernel/mm/transparent_hugepage/enabled
+        fi
     fi
     if [[ -n $THP_DEFRAG ]] ; then
-	if [ -f /sys/kernel/mm/transparent_hugepage/defrag ] ; then
-		echo "$THP_DEFRAG" > /sys/kernel/mm/transparent_hugepage/defrag
-	fi
+        if [ -f /sys/kernel/mm/transparent_hugepage/defrag ] ; then
+            echo "$THP_DEFRAG" > /sys/kernel/mm/transparent_hugepage/defrag
+        fi
     fi
     echo -n $"Configuring $prog: "
     rh_status
@@ -58,26 +58,26 @@ force_reload() {
 
 rh_status() {
     # run checks to determine if the service is running or use generic status
-	if [ -f /sys/kernel/mm/transparent_hugepage/enabled ] ; then
-		grep -q '\[always\]' /sys/kernel/mm/transparent_hugepage/enabled
-		retval_thp=$?
-	fi
-	if [ -f /sys/kernel/mm/transparent_hugepage/defrag ] ; then
-		grep -q '\[always\]' /sys/kernel/mm/transparent_hugepage/defrag
-		retval_thp_defrag=$?
-	fi
-    
+    if [ -f /sys/kernel/mm/transparent_hugepage/enabled ] ; then
+        grep -q '\[always\]' /sys/kernel/mm/transparent_hugepage/enabled
+        retval_thp=$?
+    fi
+    if [ -f /sys/kernel/mm/transparent_hugepage/defrag ] ; then
+        grep -q '\[always\]' /sys/kernel/mm/transparent_hugepage/defrag
+        retval_thp_defrag=$?
+    fi
+
     if [[ $retval_thp -eq 1 && $retval_thp_defrag -eq 1 ]] ; then
-	echo "THP disabled, THP Defrag disabled"
-	return 3
+        echo "THP disabled, THP Defrag disabled"
+        return 3
     elif [[ $retval_thp -eq 1 ]] ; then
-	echo "THP disabled, THP Defrag enabled"
-	return 3
+        echo "THP disabled, THP Defrag enabled"
+        return 3
     elif [[ $retval_thp_defrag -eq 1 ]] ; then
-	echo "THP enabled, THP Defrag disabled"
-	return 3
+        echo "THP enabled, THP Defrag disabled"
+        return 3
     else 
-	echo "THP and THP Defrag enabled"
+        echo "THP and THP Defrag enabled"
         return 0
     fi
 }
@@ -92,7 +92,7 @@ case "$1" in
         $1
         ;;
     stop)
-	rh_status_q || exit 7
+        rh_status_q || exit 7
         ;;
     restart)
         $1
